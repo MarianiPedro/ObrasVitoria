@@ -4,6 +4,9 @@ $csvUrl = 'https://dados.es.gov.br/dataset/80d53564-45d2-459d-9601-77685ab8fdf1/
 $obras = [];
 $municipioCount = [];
 $erroApi = false;
+$tipoObra = [];
+$palavras = ['REFORMA', 'CONSTRUÇÃO', 'PAVIMENTAÇÃO', 'RESTAURAÇÃO',
+             'AMPLIAÇÃO', 'IMPLANTAÇÃO', 'AQUISIÇÃO', 'CONTRATAÇÃO'];
 
 // Busca o CSV da API
 $context = stream_context_create([
@@ -70,6 +73,22 @@ if ($csvData === false) {
         $top['Outros'] = $outros;
     }
     $municipioCount = $top;
+
+    foreach ($obras as $o) {
+        $nome = mb_strtoupper($o['obra'], 'UTF-8');
+        $encontrou = false;
+        foreach ($palavras as $p) {
+            if (str_contains($nome, $p)) {
+                $tipoObra[$p] = ($tipoObra[$p] ?? 0) + 1;
+                $encontrou = true;
+                break;
+            }
+        }
+        if (!$encontrou) {
+            $tipoObra['OUTROS'] = ($tipoObra['OUTROS'] ?? 0) + 1;
+        }
+    }
+    arsort($tipoObra);
 }
 
 $obrasJson      = json_encode($obras, JSON_UNESCAPED_UNICODE);
@@ -77,4 +96,6 @@ $municipiosJson = json_encode(array_keys($municipioCount), JSON_UNESCAPED_UNICOD
 $contagemJson   = json_encode(array_values($municipioCount));
 $totalObras     = count($obras);
 $totalMunicipios = count(array_unique(array_column($obras, 'municipio')));
+$tiposJson    = json_encode(array_keys($tipoObra), JSON_UNESCAPED_UNICODE);
+$contagemTipoJson = json_encode(array_values($tipoObra));
 ?>

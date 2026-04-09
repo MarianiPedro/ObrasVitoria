@@ -57,15 +57,22 @@ require_once 'backend/api.php';
         </div>
         <div id="map"></div>
     </div>
-</div>
-
-<div class="content">
+    
     <div class="card">
         <div class="card-header">
-            <span class="icon">📊</span> Obras por Município (Top 10)
+            <span class="icon">📊</span> Obras por Município
         </div>
         <div class="chart-container">
             <canvas id="grafico"></canvas>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="icon">📊</span> Tipos de Obras por Município
+        </div>
+        <div class="chart-container">
+            <canvas id="grafico_tipo"></canvas>
         </div>
     </div>
 </div>
@@ -80,6 +87,8 @@ require_once 'backend/api.php';
     const obras      = <?= $obrasJson ?>;
     const municipios = <?= $municipiosJson ?>;
     const contagem   = <?= $contagemJson ?>;
+    const tiposObra   = <?= $tiposJson ?>;
+    const contagemTipo = <?= $contagemTipoJson ?>;
 </script>
 <script src="script.js"></script>
 

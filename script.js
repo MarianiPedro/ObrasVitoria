@@ -71,3 +71,31 @@ new Chart(ctx, {
         }
     }
 });
+
+const bar = document.getElementById('grafico_tipo').getContext('2d');
+new Chart(bar, {
+    type: 'bar',
+    data: {
+        labels: tiposObra,
+        datasets: [{
+            label: 'Quantidade de Obras',
+            data: contagemTipo,
+            backgroundColor: '#2e86c1',
+            borderRadius: 6,
+            borderSkipped: false
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { stepSize: 1 }
+            }
+        }
+    }
+});
